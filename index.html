@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pandemic App</title>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <header class="header">
+                <h1 class="header__logo">Pandemic<span>App</span> </h1>
+                <div class="header__sorting">
+                    <h2>Сортировать:</h2>
+                    <div class="header__sorting__parameters">
+                        <select name="people" id="people">
+                            <option value="" disabled selected></option>
+                            <option value="age">Возраст</option>
+                            <option value="surname">Фамилия</option>
+                            <option value="firstname">имя</option>
+                        </select>
+                        <a href="#" id="sort-direction" class="sort-direction">
+                            <i class="lni lni-sort-amount-dsc"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="people-data__add">
+                <i class="lni lni-plus"></i>
+            </div>
+
+            <div class="people-data__add-form hide-form">
+
+            </div>
+
+
+            <div class="people-data">
+                <table class="people-data__table">
+                    <thead class="people-data__header">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="data" class="people-data__json"></tbody>
+                </table>
+            </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
+
+</html>
+
+<!-- Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo sed asperiores, voluptate, doloribus dicta laboriosam et velit illum ipsa fugiat voluptas natus nisi, sunt accusamus. Illo tenetur fugiat ipsa provident. Ut accusamus, error ex sint fuga deserunt voluptates distinctio odio suscipit et neque beatae sequi, consequuntur quae, cupiditate doloribus? Repudiandae necessitatibus blanditiis quos dolores excepturi hic aut. Iure vero consequatur, tempora sapiente facere commodi quae consectetur? Atque itaque quod expedita fuga numquam, voluptatibus commodi quidem, facere autem iste officiis? Cum repellat optio excepturi obcaecati beatae accusantium sed aliquid voluptatem odit provident eum, labore quibusdam suscipit vel at veritatis, saepe eius officia! -->
