@@ -29,7 +29,7 @@ body {
 .header .header__logo {
   display: block;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
   font-weight: 700;
   margin: 2rem 1rem 1rem 1rem;
   color: #fe6f3e;
@@ -51,11 +51,11 @@ body {
 }
 
 .header__sorting select {
-  padding: 10px;
+  padding: 0.6rem;
   min-width: 12rem;
   background-color: rgb(238, 228, 228);
   border: 1px solid #fe6f3e;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   text-transform: uppercase;
 }
 
@@ -73,14 +73,14 @@ body {
 */
 .people-data {
   background-color: rgb(238, 234, 234);
-  box-shadow: 20px 20px 40px rgb(119, 117, 117);
-  padding: 30px;
+  box-shadow: 1.2rem 1.2rem 2.5rem rgb(119, 117, 117);
+  padding: 1.9rem;
 }
 
 .people-data__table {
   width: 100%;
-  margin-bottom: 30px;
-  border: 2px solid #904ede;
+  margin-bottom: 1.9rem;
+  border: 0.12rem solid #904ede;
   text-align: center;
 }
 
@@ -143,7 +143,7 @@ thead {
 thead tr th {
   padding: 1rem;
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 table,
