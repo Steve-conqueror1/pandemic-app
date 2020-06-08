@@ -66,8 +66,6 @@ addform.addEventListener('submit', (e) => {
     : age.value;
   let nameValue = name.value;
 
-  console.log(ageValue);
-
   addPerson(idValue, ageValue, nameValue);
 });
 
@@ -122,7 +120,6 @@ const displayPersons = (people) => {
 
 // Edit Person
 function handleEdit(id, name, age) {
-  console.log(name);
   showForm('Edit', id, name, age, 'btn edit-btn');
   addform.classList.remove('hide-form');
 
@@ -138,6 +135,7 @@ function EditPerson(id, age, name, peopleData) {
   });
 
   displayPersons(peopleData);
+  addform.classList.add('hide-form');
 }
 
 function showForm(header = '', id = '', name = '', age = '', btnType = '') {
@@ -377,8 +375,6 @@ function showSuccessAlert() {
       resolve();
     }, 2000)
   );
-
-  console.log('i overtook');
 }
 
 // ADDING PERSON ON SAVE
@@ -429,17 +425,16 @@ async function addPerson(idValue, ageValue, nameValue) {
     checkNameLength(name, 100) &&
     checkIfAgeIsValid(age, ageValue)
   ) {
-    let newPerson = {
-      ID: idValue,
-      Name: nameValue,
-      Age: ageValue,
-    };
+    // let newPerson = {
+    //   ID: idValue,
+    //   Name: nameValue,
+    //   Age: ageValue,
+    // };
 
+    EditPerson(idValue, ageValue, nameValue, dataObjectArray);
     addform.classList.add('hide-form');
     await showSuccessAlert();
     // dataObjectArray.push(newPerson);
-
-    EditPerson(idValue, ageValue, nameValue, dataObjectArray);
 
     id.value = '';
     age.value = '';
