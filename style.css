@@ -135,7 +135,7 @@ tr:nth-child(even) {
 }
 
 thead {
-  margin-bottom: 15px;
+  margin-bottom: 0.9rem;
   background-color: #904ede;
   color: #fff;
 }
