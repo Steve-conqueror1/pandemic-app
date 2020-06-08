@@ -6,6 +6,7 @@ let deleteBtn;
 const addformBtn = document.querySelector('.people-data__add');
 const addform = document.querySelector('.people-data__add-form');
 
+const saved = document.querySelector('.people-data__show-success');
 let saveBtn;
 let editBtn;
 
@@ -32,23 +33,6 @@ addformBtn.addEventListener('click', (e) => {
 });
 
 /**
- * Check required fields
- * обязательное поля i.e ID, ФИО, Восраст
- */
-const checkRequiredFields = (inputsArray) => {
-  inputsArray.forEach((input) => {
-    if (input.value.trim() === '') {
-      showError(
-        input,
-        `укажите ${input.previousSibling.previousSibling.innerText}`
-      );
-    } else {
-      showSuccess(input);
-    }
-  });
-};
-
-/**
  * show error messages
  */
 function showError(input, message) {
@@ -66,52 +50,8 @@ function showSuccess(input) {
   formControl.className = 'people-data_form-control success';
 }
 
-// Check if its valid name and ФИО
-function isNameLengthValid(input, number) {
-  if (input.value.length > 0 && input.value.length < number) {
-    showSuccess(input);
-    return true;
-  }
-
-  if (input.value.length > number) {
-    showError(
-      input,
-      `Минимальная длина ${input.previousSibling.previousSibling.innerText} - ${number} символов`
-    );
-    return false;
-  }
-}
-
-// Unique ID for the Table
-function isIdUnique(input, uniqueID, people) {
-  // check if the ID exists
-  person = people.find((person) => {
-    if (uniqueID === person.ID) {
-      return person;
-    }
-  });
-
-  if (person === undefined) {
-    // return true id the id does not exist
-    return true;
-  } else {
-    showError(input, `Человек с ID ${uniqueID} уже существует`);
-  }
-}
-
-// check if age is valid
-function isAgeValid(input, ageValue) {
-  let agePassed = parseFloat(ageValue).toFixed(4);
-
-  if (agePassed > 1000) {
-    showError(input, 'Возраст не может быть больше 1000');
-  } else {
-    return true;
-  }
-}
-
 /**
- * Adding Form submit event listener-----------------------------------------
+ *  -----------------------ADD & EDIT submit----------------------
  */
 addform.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -121,57 +61,14 @@ addform.addEventListener('submit', (e) => {
   name = document.querySelector('#name');
 
   let idValue = id.value;
-  let ageValue = age.value;
+  let ageValue = age.value.includes('.')
+    ? String(parseFloat(age.value).toFixed(4)) // 4 знака в дробной части
+    : age.value;
   let nameValue = name.value;
 
-  let isEdit = editBtn && editBtn.classList.contains('edit-btn');
-  let isSave = saveBtn && saveBtn.classList.contains('save-btn');
-  let isUnique = isIdUnique(id, idValue, dataObjectArray);
+  console.log(ageValue);
 
-  checkRequiredFields([id, age, name]);
-  isNameLengthValid(name, 100);
-  isAgeValid(age, ageValue);
-
-  console.log('isEdit', isEdit);
-  console.log('isSave', isSave);
-  console.log('isUnique', isIdUnique(id, idValue, dataObjectArray));
-
-  if (isSave && !isUnique) {
-    isIdUnique(id, idValue, dataObjectArray);
-  }
-
-  if (isSave && isUnique) {
-    if (isNameLengthValid(name, 100) && isAgeValid(age, ageValue)) {
-      addPerson(idValue, ageValue, nameValue);
-      addform.classList.add('hide-form');
-
-      id.value = '';
-      age.value = '';
-      name.value = '';
-
-      // remove success class
-      id.parentElement.className = 'people-data_form-control';
-      age.parentElement.className = 'people-data_form-control';
-      name.parentElement.className = 'people-data_form-control';
-    }
-  }
-
-  if (isEdit) {
-    EditPerson(idValue, ageValue, nameValue, dataObjectArray);
-
-    if (isNameLengthValid(name, 100) && isAgeValid(age, ageValue)) {
-      addform.classList.add('hide-form');
-
-      id.value = '';
-      age.value = '';
-      name.value = '';
-
-      // remove success class
-      id.parentElement.className = 'people-data_form-control';
-      age.parentElement.className = 'people-data_form-control';
-      name.parentElement.className = 'people-data_form-control';
-    }
-  }
+  addPerson(idValue, ageValue, nameValue);
 });
 
 /**
@@ -237,7 +134,6 @@ function EditPerson(id, age, name, peopleData) {
     if (person.ID === id) {
       person.Age = age;
       person.Name = name;
-      return;
     }
   });
 
@@ -400,15 +296,161 @@ function sortData(sortParameter) {
   }
 }
 
-// ADDING PERSON ON SAVE
-function addPerson(id, age, name) {
-  let newPerson = {
-    ID: id,
-    Name: name,
-    Age: age,
-  };
+// VALIDATION
+// 1. Check required Fields
+// обязательное поля i.e ID, ФИО, Восраст
+const checkRequiredFields = (inputsArray) => {
+  let isvalid = true;
+  inputsArray.forEach((input) => {
+    if (input.value.trim() === '') {
+      showError(
+        input,
+        `укажите ${input.previousSibling.previousSibling.innerText}`
+      );
+      isvalid = false;
+    } else {
+      showSuccess(input);
+    }
+  });
+  return isvalid;
+};
 
-  dataObjectArray.push(newPerson);
+//2. check if ID is unique
+// Unique ID for the Table
+function checkIfIDisUnique(input, uniqueID, people) {
+  // check if the ID exists
+  let person = people.find(({ ID }) => parseInt(ID) === parseInt(uniqueID));
+
+  if (person === undefined && uniqueID === '') {
+    return false;
+  } else if (person !== undefined && uniqueID !== '') {
+    showError(input, `ID ${uniqueID} занят`);
+    return false;
+  } else {
+    showSuccess(input);
+    return true;
+  }
+}
+
+// 3. Check if its valid name and ФИО
+function checkNameLength(input, number) {
+  let isValidName = true;
+  if (input.value.length > 0 && input.value.length < number) {
+    showSuccess(input);
+  }
+
+  if (input.value.length === 0) {
+    isValidName = false;
+  }
+
+  if (input.value.length > 0 && input.value.length > number) {
+    showError(
+      input,
+      `Минимальная длина ${input.previousSibling.previousSibling.innerText} - ${number} символов`
+    );
+    isValidName = false;
+  }
+  return isValidName;
+}
+
+// check if age is valid
+function checkIfAgeIsValid(input, agePassed) {
+  let age = true;
+  if (agePassed > 1000) {
+    showError(input, 'Возраст не может быть больше 1000');
+    age = false;
+  }
+
+  if (agePassed === '') {
+    age = false;
+  }
+
+  return age;
+}
+
+// Show success alert
+function showSuccessAlert() {
+  saved.className = 'people-data__show-success saved';
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      saved.className = 'people-data__show-success';
+      resolve();
+    }, 2000)
+  );
+
+  console.log('i overtook');
+}
+
+// ADDING PERSON ON SAVE
+async function addPerson(idValue, ageValue, nameValue) {
+  id = document.querySelector('#id');
+  age = document.querySelector('#age');
+  name = document.querySelector('#name');
+
+  let isEdit = editBtn && editBtn.classList.contains('edit-btn');
+  let isSave = saveBtn && saveBtn.classList.contains('save-btn');
+
+  // Validation
+  checkRequiredFields([id, age, name]);
+  checkIfIDisUnique(id, idValue, dataObjectArray);
+  checkNameLength(name, 100);
+  checkIfAgeIsValid(age, ageValue);
+
+  if (
+    isSave &&
+    checkRequiredFields([id, age, name]) &&
+    checkIfIDisUnique(id, idValue, dataObjectArray) &&
+    checkNameLength(name, 100) &&
+    checkIfAgeIsValid(age, ageValue)
+  ) {
+    let newPerson = {
+      ID: idValue,
+      Name: nameValue,
+      Age: ageValue,
+    };
+
+    addform.classList.add('hide-form');
+    await showSuccessAlert();
+    dataObjectArray.push(newPerson);
+
+    id.value = '';
+    age.value = '';
+    name.value = '';
+
+    // remove success class
+    id.parentElement.className = 'people-data_form-control';
+    age.parentElement.className = 'people-data_form-control';
+    name.parentElement.className = 'people-data_form-control';
+  }
+
+  if (
+    isEdit &&
+    checkRequiredFields([id, age, name]) &&
+    checkNameLength(name, 100) &&
+    checkIfAgeIsValid(age, ageValue)
+  ) {
+    let newPerson = {
+      ID: idValue,
+      Name: nameValue,
+      Age: ageValue,
+    };
+
+    addform.classList.add('hide-form');
+    await showSuccessAlert();
+    // dataObjectArray.push(newPerson);
+
+    EditPerson(idValue, ageValue, nameValue, dataObjectArray);
+
+    id.value = '';
+    age.value = '';
+    name.value = '';
+
+    // remove success class
+    id.parentElement.className = 'people-data_form-control';
+    age.parentElement.className = 'people-data_form-control';
+    name.parentElement.className = 'people-data_form-control';
+  }
+
   displayPersons(dataObjectArray);
 }
 

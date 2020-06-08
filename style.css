@@ -5,6 +5,9 @@
   padding: 0;
   box-sizing: inherit;
 }
+html {
+  font-size: 100%;
+}
 
 body {
   box-sizing: inherit;
@@ -97,8 +100,33 @@ body {
 .people-data__add:hover {
   cursor: pointer;
 }
+.people-data__show-success {
+  visibility: hidden;
+  background-color: #32ff7e;
+  padding: 1rem;
+  position: absolute;
+  right: 0;
+  border-radius: 0.3rem;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
 
-tr {
+.people-data__show-success.saved {
+  visibility: visible;
+}
+
+.people-data__show-success h3 {
+  color: #fff;
+  padding: 0 1rem;
+}
+.people-data__show-success i {
+  color: #904ede;
+  font-size: 2rem;
+  padding: 0 1rem;
+}
+
+.people-data__show-success tr {
   padding: 2rem;
 }
 
