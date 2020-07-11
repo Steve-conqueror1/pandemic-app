@@ -8,6 +8,7 @@ const addform = document.querySelector('.people-data__add-form');
 const formPage = document.querySelector('.people-data__form-page');
 
 const saved = document.querySelector('.people-data__show-success');
+
 let saveBtn;
 let editBtn;
 
@@ -122,6 +123,7 @@ const displayPersons = (people) => {
 // Edit Person
 function handleEdit(id, name, age) {
   showForm('Edit', id, name, age, 'btn edit-btn');
+
   formPage.classList.remove('hide-form');
 
   editBtn = document.querySelector('.edit-btn');
@@ -136,6 +138,7 @@ function EditPerson(id, age, name, peopleData) {
   });
 
   displayPersons(peopleData);
+  // formControl.className = 'people-data_form-control';
   formPage.classList.add('hide-form');
 }
 
@@ -304,7 +307,9 @@ const checkRequiredFields = (inputsArray) => {
     if (input.value.trim() === '') {
       showError(
         input,
-        `укажите ${input.previousSibling.previousSibling.innerText}`
+        input.previousSibling.previousSibling.innerText.length > 0
+          ? `Укажите ${input.previousSibling.previousSibling.innerText}`
+          : null
       );
       isvalid = false;
     } else {
