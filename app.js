@@ -308,8 +308,8 @@ const checkRequiredFields = (inputsArray) => {
       showError(
         input,
         input.previousSibling.previousSibling.innerText.length > 0
-          ? `Укажите ${input.previousSibling.previousSibling.innerText}`
-          : null
+          ? `Укажите** ${input.previousSibling.previousSibling.innerText}`
+          : ''
       );
       isvalid = false;
     } else {
