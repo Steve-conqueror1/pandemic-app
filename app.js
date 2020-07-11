@@ -5,6 +5,7 @@ const sortDirection = document.querySelector('#sort-direction');
 let deleteBtn;
 const addformBtn = document.querySelector('.people-data__add');
 const addform = document.querySelector('.people-data__add-form');
+const formPage = document.querySelector('.people-data__form-page');
 
 const saved = document.querySelector('.people-data__show-success');
 let saveBtn;
@@ -28,7 +29,7 @@ let dataObjectArray;
 addformBtn.addEventListener('click', (e) => {
   showForm('Add', '', '', '', 'btn save-btn');
 
-  addform.classList.remove('hide-form');
+  formPage.classList.remove('hide-form');
   saveBtn = document.querySelector('.save-btn');
 });
 
@@ -121,7 +122,7 @@ const displayPersons = (people) => {
 // Edit Person
 function handleEdit(id, name, age) {
   showForm('Edit', id, name, age, 'btn edit-btn');
-  addform.classList.remove('hide-form');
+  formPage.classList.remove('hide-form');
 
   editBtn = document.querySelector('.edit-btn');
 }
@@ -135,7 +136,7 @@ function EditPerson(id, age, name, peopleData) {
   });
 
   displayPersons(peopleData);
-  addform.classList.add('hide-form');
+  formPage.classList.add('hide-form');
 }
 
 function showForm(header = '', id = '', name = '', age = '', btnType = '') {
@@ -386,12 +387,6 @@ async function addPerson(idValue, ageValue, nameValue) {
   let isEdit = editBtn && editBtn.classList.contains('edit-btn');
   let isSave = saveBtn && saveBtn.classList.contains('save-btn');
 
-  // Validation
-  checkRequiredFields([id, age, name]);
-  checkIfIDisUnique(id, idValue, dataObjectArray);
-  checkNameLength(name, 100);
-  checkIfAgeIsValid(age, ageValue);
-
   if (
     isSave &&
     checkRequiredFields([id, age, name]) &&
@@ -399,13 +394,19 @@ async function addPerson(idValue, ageValue, nameValue) {
     checkNameLength(name, 100) &&
     checkIfAgeIsValid(age, ageValue)
   ) {
+    // Validation
+    checkRequiredFields([id, age, name]);
+    checkIfIDisUnique(id, idValue, dataObjectArray);
+    checkNameLength(name, 100);
+    checkIfAgeIsValid(age, ageValue);
+
     let newPerson = {
       ID: idValue,
       Name: nameValue,
       Age: ageValue,
     };
 
-    addform.classList.add('hide-form');
+    formPage.classList.add('hide-form');
     await showSuccessAlert();
     dataObjectArray.push(newPerson);
 
@@ -425,14 +426,13 @@ async function addPerson(idValue, ageValue, nameValue) {
     checkNameLength(name, 100) &&
     checkIfAgeIsValid(age, ageValue)
   ) {
-    // let newPerson = {
-    //   ID: idValue,
-    //   Name: nameValue,
-    //   Age: ageValue,
-    // };
+    // Validation
+    checkRequiredFields([id, age, name]);
+    checkNameLength(name, 100);
+    checkIfAgeIsValid(age, ageValue);
 
     EditPerson(idValue, ageValue, nameValue, dataObjectArray);
-    addform.classList.add('hide-form');
+    formPage.classList.add('hide-form');
     await showSuccessAlert();
     // dataObjectArray.push(newPerson);
 
