@@ -272,3 +272,39 @@ td .btn:focus {
 .hide-form {
   visibility: hidden;
 }
+
+@media (max-width: 700px) {
+  html {
+    font-size: 67%;
+  }
+  .container {
+    max-width: 100%;
+  }
+  .header .header__logo {
+    display: inline-block;
+    align-self: center;
+  }
+
+  .people-data {
+    background-color: rgb(238, 234, 234);
+    box-shadow: none;
+    padding: 1rem;
+    width: 100%;
+  }
+  .people-data__add {
+    width: 70%;
+    text-align: center;
+    padding: 0.1rem 2rem;
+    font-size: 2rem;
+  }
+
+  .btn {
+    padding: 0.6rem;
+    border-radius: 0.2rem;
+  }
+
+  td {
+    font-size: 1rem;
+    padding: 0.2rem;
+  }
+}
